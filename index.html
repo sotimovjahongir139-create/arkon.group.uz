@@ -1,0 +1,1394 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arkon.uz — Падошлар ишлаб чиқариш</title>
+<link rel="icon" href="assets/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand: #2F5BE8;
+    --brand-deep: #1E3FB5;
+    --brand-soft: #E8EFFE;
+    --brand-accent: #A8C4FF;
+    --ink: #0B1430;
+    --ink-2: #3B4766;
+    --muted: #6A748F;
+    --line: #E6EAF2;
+    --bg: #FFFFFF;
+    --bg-soft: #F5F7FB;
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Manrope', sans-serif; font-weight: 700; letter-spacing: -0.02em; margin: 0; color: var(--ink); }
+  h1 { font-size: clamp(44px, 6vw, 88px); line-height: 1.02; letter-spacing: -0.035em; }
+  h2 { font-size: clamp(36px, 4.5vw, 64px); line-height: 1.05; letter-spacing: -0.03em; }
+  h3 { font-size: clamp(22px, 2vw, 28px); line-height: 1.15; }
+  p  { margin: 0; color: var(--ink-2); }
+  a  { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  button { font-family: inherit; cursor: pointer; border: none; }
+
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+
+  /* ========== NAV ========== */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(12px) saturate(1.1);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer; transition: opacity .2s;
+  }
+  .brand:hover { opacity: .8; }
+  .brand img { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; }
+  .brand span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 22px; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .brand span em { font-style: normal; color: var(--brand); }
+  .nav-links {
+    display: flex; align-items: center; gap: 36px;
+  }
+  .nav-links a {
+    font-size: 15px; font-weight: 500; color: var(--ink-2);
+    position: relative; padding: 6px 0; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--brand); }
+  .nav-links a.active::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -22px;
+    height: 2px; background: var(--brand); border-radius: 2px;
+  }
+  .nav-cta {
+    background: var(--ink); color: white;
+    padding: 11px 22px; border-radius: 999px;
+    font-size: 14px; font-weight: 600;
+    transition: background .2s, transform .2s;
+  }
+  .nav-cta:hover { background: var(--brand); transform: translateY(-1px); }
+
+  .lang-switch {
+    display: inline-flex; align-items: center; gap: 2px;
+    background: #F1F4FA; border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px;
+    margin-right: 14px;
+  }
+  .lang-switch button {
+    background: transparent; border: none;
+    font-family: inherit; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; color: var(--muted);
+    padding: 6px 11px; border-radius: 999px;
+    cursor: pointer; transition: all .2s;
+  }
+  .lang-switch button:hover { color: var(--ink); }
+  .lang-switch button.active {
+    background: white; color: var(--ink);
+    box-shadow: 0 2px 6px rgba(11,20,48,0.08);
+  }
+  .nav-right { display: flex; align-items: center; }
+
+  /* ========== PAGE TRANSITIONS ========== */
+  .page { display: none; animation: fadeUp .5s ease; }
+  .page.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== HOME ========== */
+  .hero {
+    position: relative; overflow: hidden;
+    padding: 80px 0 120px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #E8EFFE 0%, transparent 70%),
+      linear-gradient(180deg, #F5F7FB 0%, #FFFFFF 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 18% 78%, rgba(47,91,232,0.12), transparent 32%),
+      radial-gradient(circle at 82% 28%, rgba(47,91,232,0.08), transparent 28%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    gap: 60px; align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px 7px 10px;
+    background: white; border: 1px solid var(--line);
+    border-radius: 999px; font-size: 13px; font-weight: 600;
+    color: var(--ink-2);
+    box-shadow: 0 4px 14px rgba(11,20,48,0.04);
+  }
+  .eyebrow .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #20C96B;
+    box-shadow: 0 0 0 3px rgba(32,201,107,0.2);
+  }
+  .hero h1 { margin-top: 22px; }
+  .hero h1 .accent { color: var(--brand); font-style: italic; font-weight: 700; }
+  .hero .lede {
+    font-size: 19px; color: var(--ink-2);
+    max-width: 520px; margin-top: 24px;
+  }
+  .hero-ctas {
+    display: flex; gap: 12px; margin-top: 36px;
+  }
+  .btn-primary, .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 28px; border-radius: 999px;
+    font-size: 15px; font-weight: 600;
+    transition: all .25s ease;
+  }
+  .btn-primary {
+    background: var(--brand); color: white;
+    box-shadow: 0 10px 26px rgba(47,91,232,0.28);
+  }
+  .btn-primary:hover { background: var(--brand-deep); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(47,91,232,0.36); }
+  .btn-secondary {
+    background: white; color: var(--ink); border: 1px solid var(--line);
+  }
+  .btn-secondary:hover { border-color: var(--ink); }
+
+  .hero-stats {
+    display: flex; gap: 42px; margin-top: 52px;
+    padding-top: 28px; border-top: 1px solid var(--line);
+    max-width: 520px;
+  }
+  .hero-stats .stat .num {
+    font-family: 'Space Grotesk'; font-size: 32px; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .hero-stats .stat .lbl { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .hero-visual {
+    position: relative; aspect-ratio: 1/1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-visual .stage {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 50%, #D9E4FE 0%, transparent 62%);
+    border-radius: 50%;
+    filter: blur(2px);
+  }
+  .hero-card {
+    position: absolute;
+    background: white; border-radius: 20px;
+    border: 1px solid var(--line);
+    padding: 14px;
+    box-shadow: 0 30px 80px -20px rgba(11,20,48,0.25), 0 10px 30px rgba(11,20,48,0.08);
+  }
+  .hero-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; border-radius: 12px;
+  }
+  .hero-card.c1 {
+    top: 6%; left: 4%; width: 48%; aspect-ratio: 3/4;
+    transform: rotate(-6deg);
+    animation: floatY 6s ease-in-out infinite;
+  }
+  .hero-card.c2 {
+    top: 12%; right: 2%; width: 44%; aspect-ratio: 4/5;
+    transform: rotate(5deg);
+    animation: floatY 7s ease-in-out infinite -2s;
+  }
+  .hero-card.c3 {
+    bottom: 4%; left: 22%; width: 56%; aspect-ratio: 1/1;
+    transform: rotate(-2deg);
+    z-index: 3;
+    animation: floatY 8s ease-in-out infinite -4s;
+  }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50% { transform: translateY(-12px) rotate(var(--r, 0deg)); }
+  }
+  .hero-card.c1 { --r: -6deg; }
+  .hero-card.c2 { --r: 5deg; }
+  .hero-card.c3 { --r: -2deg; }
+
+  .hero-badge {
+    position: absolute; z-index: 5;
+    background: var(--ink); color: white;
+    padding: 14px 18px; border-radius: 16px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 14px 30px rgba(11,20,48,0.25);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-badge.b1 { top: 44%; left: -2%; }
+  .hero-badge.b1 svg { color: var(--brand-accent); }
+  .hero-badge.b2 {
+    right: -4%; bottom: 20%;
+    background: white; color: var(--ink);
+    border: 1px solid var(--line);
+  }
+
+  /* ---------- USP ---------- */
+  .usp { padding: 100px 0; background: var(--bg); }
+  .usp-head {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px;
+    margin-bottom: 56px; align-items: end;
+  }
+  .usp-head .label { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand); margin-bottom: 14px; }
+  .usp-head p { font-size: 18px; max-width: 520px; }
+  .usp-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .usp-card {
+    padding: 32px 28px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    transition: all .3s ease;
+  }
+  .usp-card:hover {
+    background: white; border-color: var(--brand-accent);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -10px rgba(47,91,232,0.15);
+  }
+  .usp-card .ico {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: var(--brand); color: white;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 22px;
+  }
+  .usp-card h3 { font-size: 20px; margin-bottom: 10px; }
+  .usp-card p { font-size: 14px; }
+
+  /* ---------- HOME PRODUCTS TEASER ---------- */
+  .teaser {
+    padding: 100px 0;
+    background: linear-gradient(180deg, #fff 0%, #F5F7FB 100%);
+  }
+  .teaser-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 44px; gap: 40px; }
+  .teaser-head h2 { max-width: 600px; }
+  .teaser-head p { max-width: 420px; font-size: 16px; }
+  .teaser-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+
+  /* ---------- CTA BLOCK ---------- */
+  .cta-block {
+    margin: 80px 0; padding: 72px 60px;
+    background:
+      radial-gradient(ellipse 60% 80% at 90% 50%, rgba(168,196,255,0.25), transparent 60%),
+      linear-gradient(135deg, #1E3FB5 0%, #2F5BE8 100%);
+    border-radius: var(--radius-lg);
+    color: white; position: relative; overflow: hidden;
+  }
+  .cta-block::before {
+    content: ''; position: absolute;
+    top: -20%; right: -10%; width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 65%);
+    border-radius: 50%;
+  }
+  .cta-block-inner {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center;
+  }
+  .cta-block h2 { color: white; font-size: clamp(32px, 3.4vw, 48px); }
+  .cta-block p { color: rgba(255,255,255,0.82); margin-top: 16px; font-size: 17px; }
+  .cta-block .btn-primary {
+    background: white; color: var(--brand-deep);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.18);
+  }
+  .cta-block .btn-primary:hover { background: #F5F7FB; }
+
+  /* ========== ABOUT PAGE ========== */
+  .page-head {
+    padding: 90px 0 60px;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, var(--brand-soft) 0%, transparent 70%),
+      white;
+  }
+  .page-head .label { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand); margin-bottom: 14px; }
+  .page-head h1 { font-size: clamp(48px, 6vw, 84px); max-width: 900px; }
+  .page-head h1 .accent { color: var(--brand); font-style: italic; }
+  .page-head .lede { margin-top: 28px; font-size: 18px; max-width: 640px; }
+
+  .about-gallery {
+    padding: 60px 0 80px;
+  }
+  .about-gallery-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 280px;
+    gap: 16px;
+  }
+  .ag-item {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-soft);
+    position: relative;
+  }
+  .ag-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .ag-item:hover img { transform: scale(1.05); }
+  .ag-item.i1 { grid-row: span 2; }
+  .ag-item.i2 {}
+  .ag-item.i3 {}
+  .ag-item.i4 {}
+  .ag-item.i5 {}
+  .ag-item .cap {
+    position: absolute; bottom: 14px; left: 16px;
+    padding: 6px 12px; background: rgba(11,20,48,0.85);
+    color: white; font-size: 12px; font-weight: 600;
+    border-radius: 999px; backdrop-filter: blur(6px);
+  }
+
+  .about-story {
+    padding: 80px 0;
+  }
+  .story-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;
+    align-items: start;
+  }
+  .story-grid h2 .accent { color: var(--brand); font-style: italic; }
+  .story-grid p { font-size: 17px; margin-bottom: 18px; line-height: 1.7; }
+  .story-grid p strong { color: var(--ink); font-weight: 600; }
+
+  .about-stats {
+    background: var(--bg-soft);
+    padding: 64px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; text-align: center; }
+  .stat-big .num {
+    font-family: 'Space Grotesk'; font-size: 64px; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .stat-big .num em { font-style: normal; color: var(--brand); }
+  .stat-big .lbl { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
+  .values {
+    padding: 90px 0;
+  }
+  .values h2 { text-align: center; max-width: 720px; margin: 0 auto 50px; }
+  .values-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+  }
+  .value-card {
+    padding: 36px 30px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: white;
+    transition: all .3s ease;
+  }
+  .value-card:hover { border-color: var(--brand); transform: translateY(-4px); box-shadow: 0 20px 50px -10px rgba(47,91,232,0.15); }
+  .value-card .n {
+    font-family: 'Space Grotesk'; font-size: 14px; font-weight: 700; color: var(--brand);
+    letter-spacing: 0.1em;
+  }
+  .value-card h3 { margin: 16px 0 10px; font-size: 22px; }
+
+  /* ========== PRODUCTS PAGE ========== */
+  .filter-bar {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+    margin: 30px 0 50px;
+  }
+  .filter-btn {
+    padding: 11px 22px; border-radius: 999px;
+    border: 1px solid var(--line); background: white;
+    font-size: 14px; font-weight: 600; color: var(--ink-2);
+    transition: all .2s ease;
+  }
+  .filter-btn:hover { border-color: var(--brand); color: var(--brand); }
+  .filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .products-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    padding-bottom: 100px;
+  }
+  .product-card {
+    cursor: pointer;
+    transition: transform .3s ease;
+  }
+  .product-card:hover { transform: translateY(-6px); }
+  .product-img {
+    position: relative;
+    aspect-ratio: 1/1;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-soft);
+    margin-bottom: 16px;
+  }
+  .product-img .bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--pc1, #E8EFFE) 0%, var(--pc2, #C5D1E6) 100%);
+  }
+  .product-img img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .5s ease;
+    mix-blend-mode: multiply;
+    filter: contrast(1.05) saturate(1.1);
+  }
+  .product-card:hover .product-img img { transform: scale(1.06); }
+  .product-tag {
+    position: absolute; top: 14px; left: 14px;
+    padding: 5px 11px; background: rgba(255,255,255,0.95);
+    border-radius: 999px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink);
+    backdrop-filter: blur(6px);
+    z-index: 2;
+  }
+  .product-arrow {
+    position: absolute; bottom: 14px; right: 14px;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink);
+    transform: translateY(10px); opacity: 0;
+    transition: all .3s ease;
+    z-index: 2;
+  }
+  .product-card:hover .product-arrow { transform: translateY(0); opacity: 1; }
+  .product-meta .cat {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--brand);
+  }
+  .product-meta h3 { font-size: 19px; margin: 4px 0 6px; }
+  .product-meta .desc { font-size: 14px; color: var(--muted); }
+
+  /* ========== CONTACT PAGE ========== */
+  .contact-body { padding: 30px 0 100px; }
+  .contact-card {
+    background: linear-gradient(135deg, #F5F7FB 0%, #E8EFFE 100%);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    border: 1px solid var(--line);
+  }
+  .form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+  }
+  .form-group label {
+    font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; display: block;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 14px 16px;
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    font-family: inherit; font-size: 15px;
+    background: white; color: var(--ink);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none; border-color: var(--brand);
+    box-shadow: 0 0 0 4px rgba(47,91,232,0.12);
+  }
+  .form-group textarea { min-height: 140px; resize: vertical; }
+  .form-group.full { grid-column: 1 / -1; }
+  .submit-row {
+    margin-top: 30px; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+  .submit-note { font-size: 13px; color: var(--muted); max-width: 360px; }
+
+  .contact-info {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+    margin-top: 50px;
+  }
+  .info-card {
+    padding: 32px 28px; background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-md); text-align: left;
+  }
+  .info-card .ico {
+    width: 46px; height: 46px; border-radius: 12px;
+    background: var(--brand-soft); color: var(--brand);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+  }
+  .info-card h4 { font-size: 15px; color: var(--muted); font-weight: 600; margin: 0 0 4px; letter-spacing: 0.02em; }
+  .info-card p { font-size: 17px; color: var(--ink); font-weight: 600; }
+  .info-card a { color: var(--brand); text-decoration: none; }
+
+  .contact-map {
+    margin-top: 30px;
+    background: linear-gradient(135deg, #F0F4FB 0%, #E8EFFE 100%);
+    border-radius: var(--radius-md);
+    padding: 40px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    border: 1px solid var(--line);
+  }
+  .contact-map .illus {
+    height: 260px; border-radius: 14px;
+    background:
+      repeating-linear-gradient(45deg, rgba(47,91,232,0.06) 0 2px, transparent 2px 20px),
+      linear-gradient(135deg, #D9E4FE, #A8C4FF);
+    position: relative; overflow: hidden;
+  }
+  .map-pin {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -100%);
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--brand); color: white;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(47,91,232,0.4);
+  }
+  .map-pin::after {
+    content: ''; position: absolute; top: 100%; left: 50%;
+    transform: translateX(-50%); border: 8px solid transparent; border-top-color: var(--brand);
+  }
+  .map-pulse {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px; height: 60px; border-radius: 50%;
+    background: rgba(47,91,232,0.2);
+    animation: pulse 2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { transform: translate(-50%,-50%) scale(.5); opacity: 1; }
+    100% { transform: translate(-50%,-50%) scale(2.5); opacity: 0; }
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    background: var(--ink); color: rgba(255,255,255,0.7);
+    padding: 80px 0 40px;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+  .footer .brand span { color: white; }
+  .footer .brand span em { color: var(--brand-accent); }
+  .footer h5 { font-size: 14px; color: white; margin: 0 0 18px; font-weight: 600; letter-spacing: 0.04em; }
+  .footer ul { list-style: none; margin: 0; padding: 0; }
+  .footer li { margin-bottom: 10px; font-size: 14px; }
+  .footer a:hover { color: white; }
+  .footer-bottom {
+    padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.12);
+    display: flex; justify-content: space-between; font-size: 13px; flex-wrap: wrap; gap: 16px;
+  }
+  .footer-about { font-size: 14px; max-width: 340px; margin: 16px 0 20px; line-height: 1.7; }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(11,20,48,0.75);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px; z-index: 100;
+    animation: fadeIn .25s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: white; border-radius: var(--radius-lg);
+    max-width: 960px; width: 100%;
+    max-height: 90vh; overflow: auto;
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    animation: popIn .3s ease;
+  }
+  @keyframes popIn { from { opacity: 0; transform: scale(.96) translateY(10px); } to { opacity: 1; transform: none; } }
+  .modal-img {
+    aspect-ratio: 1/1; background: var(--bg-soft); position: relative;
+  }
+  .modal-img .bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--pc1, #E8EFFE), var(--pc2, #C5D1E6));
+  }
+  .modal-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; filter: contrast(1.05) saturate(1.1); }
+  .modal-body { padding: 48px 42px; position: relative; }
+  .modal-close {
+    position: absolute; top: 18px; right: 18px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--bg-soft); color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    border: none;
+  }
+  .modal-body .cat { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brand); }
+  .modal-body h2 { font-size: 32px; margin: 8px 0 12px; }
+  .modal-body p { margin-bottom: 16px; }
+  .modal-body .specs { margin: 20px 0; padding: 20px; background: var(--bg-soft); border-radius: 12px; }
+  .modal-body .specs .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--line); }
+  .modal-body .specs .row:last-child { border: none; }
+  .modal-body .specs .row span:first-child { color: var(--muted); }
+  .modal-body .specs .row span:last-child { color: var(--ink); font-weight: 600; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { aspect-ratio: 4/3; }
+    .usp-grid, .teaser-grid, .products-grid, .values-grid, .footer-grid, .stats-grid { grid-template-columns: repeat(2,1fr) !important; }
+    .usp-head, .teaser-head, .story-grid, .form-grid, .contact-info, .contact-map, .cta-block-inner { grid-template-columns: 1fr !important; }
+    .about-gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 220px); }
+    .about-gallery-grid .i1 { grid-row: span 1; grid-column: span 2; }
+    .nav-links { display: none; }
+    .modal { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="brand" onclick="navigateTo('home')">
+      <img src="assets/logo.png" alt="Arkon" />
+      <span>arkon<em>.uz</em></span>
+    </div>
+    <div class="nav-links">
+      <a href="#" data-nav="home" class="active" onclick="event.preventDefault(); navigateTo('home')" data-i18n="navHome">Bosh sahifa</a>
+      <a href="#" data-nav="about" onclick="event.preventDefault(); navigateTo('about')" data-i18n="navAbout">Biz haqimizda</a>
+      <a href="#" data-nav="products" onclick="event.preventDefault(); navigateTo('products')" data-i18n="navProducts">Mahsulotlar</a>
+      <a href="#" data-nav="contact" onclick="event.preventDefault(); navigateTo('contact')" data-i18n="navContact">Kontakt</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch" id="lang-switch">
+        <button data-lang="uz" class="active" onclick="setLang('uz')">UZ</button>
+        <button data-lang="ru" onclick="setLang('ru')">RU</button>
+        <button data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
+      <a href="#" class="nav-cta" onclick="event.preventDefault(); navigateTo('contact')" data-i18n="navCta">Bog'lanish</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HOME ============ -->
+<div class="page active" id="page-home" data-screen-label="01 Home">
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">
+          <span class="dot"></span>
+          <span data-i18n="eyebrow">1994-yildan beri sifatli ishlab chiqarish</span>
+        </div>
+        <h1><span data-i18n="heroH1a">O'zbekistonda</span> <span class="accent" data-i18n="heroH1b">padoshlar</span><br/><span data-i18n="heroH1c">ishlab chiqaruvchi yetakchi</span></h1>
+        <p class="lede" data-i18n="heroLede">Arkon — erkaklar, ayollar va bolalar oyoq kiyimlari uchun yuqori sifatli padoshlar ishlab chiqarish bilan shug'ullanuvchi korxona. Chidamli materiallar va aniq qolipda tayyorlanadi.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn-primary" onclick="event.preventDefault(); navigateTo('products')">
+            <span data-i18n="heroBtn1">Mahsulotlarni ko'rish</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#" class="btn-secondary" onclick="event.preventDefault(); navigateTo('about')" data-i18n="heroBtn2">Biz haqimizda</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><div class="num">30+</div><div class="lbl" data-i18n="statExp">Yillik tajriba</div></div>
+          <div class="stat"><div class="num">120+</div><div class="lbl" data-i18n="statAssort">Assortiment</div></div>
+          <div class="stat"><div class="num">1994</div><div class="lbl" data-i18n="statSince">Yildan buyon</div></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="stage"></div>
+        <div class="hero-card c1" style="--pc1:#F5ECE0; --pc2:#D8C4A3;">
+          <div style="width:100%;height:100%;border-radius:12px;background:linear-gradient(135deg,#F5ECE0,#D8C4A3);position:relative;overflow:hidden;">
+            <img src="assets/product-1.jpg" style="mix-blend-mode:multiply;filter:contrast(1.05) saturate(1.1);"/>
+          </div>
+        </div>
+        <div class="hero-card c2" style="--pc1:#E8EDF8; --pc2:#AEBEDC;">
+          <div style="width:100%;height:100%;border-radius:12px;background:linear-gradient(135deg,#E8EDF8,#AEBEDC);position:relative;overflow:hidden;">
+            <img src="assets/product-2.png" style="mix-blend-mode:multiply;filter:contrast(1.05) saturate(1.1);"/>
+          </div>
+        </div>
+        <div class="hero-card c3" style="--pc1:#F0E8D8; --pc2:#C8B290;">
+          <div style="width:100%;height:100%;border-radius:12px;background:linear-gradient(135deg,#F0E8D8,#C8B290);position:relative;overflow:hidden;">
+            <img src="assets/product-3.png" style="mix-blend-mode:multiply;filter:contrast(1.05) saturate(1.1);"/>
+          </div>
+        </div>
+        <div class="hero-badge b1">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 7l-8 10-4-4"/></svg>
+          <span data-i18n="badge1">Yuqori sifatli padoshlar</span>
+        </div>
+        <div class="hero-badge b2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F5BE8" stroke-width="2.2" stroke-linecap="round"><path d="M12 2l2.4 6.9L22 10l-6 5 2 7.5L12 18l-6 4.5 2-7.5L2 10l7.6-1.1L12 2z"/></svg>
+          <span data-i18n="badge2">Zamonaviy uskunalar</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="usp">
+    <div class="container">
+      <div class="usp-head">
+        <div>
+          <div class="label" data-i18n="uspLabel">Nega aynan Arkon</div>
+          <h2 data-i18n="uspTitle">Har bir juft poyabzal sifatli poydevordan boshlanadi</h2>
+        </div>
+        <p data-i18n="uspIntro">Padosh — oyoq kiyimining jon qismi. Biz uni chidamli materiallar va tabiiy teri qoplamalarini aralashtirib, aniq qolipda ishlab chiqaramiz.</p>
+      </div>
+      <div class="usp-grid">
+        <div class="usp-card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.5 9l-7.8-5.2c-.4-.3-1-.3-1.4 0L3.5 9v10.5h17V9z"/><path d="M9.5 19v-5h5v5"/></svg></div>
+          <h3 data-i18n="uspQualityT">Yuqori sifat</h3>
+          <p data-i18n="uspQualityD">Chidamli materiallar va sifatli teri — uzoq xizmat qilish uchun.</p>
+        </div>
+        <div class="usp-card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 11V7a5 5 0 0 0-10 0v4"/><rect x="4" y="11" width="16" height="10" rx="2"/></svg></div>
+          <h3 data-i18n="uspDurT">Chidamlilik</h3>
+          <p data-i18n="uspDurD">Uzoq muddat foydalanishga chidamli material va puxta qolip.</p>
+        </div>
+        <div class="usp-card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.9 2.9M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.9-2.9M16.2 7.8l2.9-2.9"/></svg></div>
+          <h3 data-i18n="uspMoldT">Maxsus qoliplar</h3>
+          <p data-i18n="uspMoldD">Buyurtmachining talabi bo'yicha shaxsiy qoliplar tayyorlash.</p>
+        </div>
+        <div class="usp-card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12l2 0M19 12l2 0M12 3v2M12 19v2"/><circle cx="12" cy="12" r="6"/></svg></div>
+          <h3 data-i18n="uspExpT">30+ yil tajriba</h3>
+          <p data-i18n="uspExpD">1994 yildan beri padosh ishlab chiqarishda yetakchi pozitsiyada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="teaser">
+    <div class="container">
+      <div class="teaser-head">
+        <h2 data-i18n="teaserTitle" data-i18n-html="1">Bizning <span style="color:var(--brand); font-style:italic;">mahsulotlarimiz</span></h2>
+        <p data-i18n="teaserP">Erkak, ayol va bolalar poyabzali uchun turli qolip va rangdagi padoshlar. Har bir juft — qo'lda tekshirilgan.</p>
+      </div>
+      <div class="teaser-grid" id="home-products"></div>
+      <div style="text-align:center; margin-top: 40px;">
+        <a href="#" class="btn-secondary" onclick="event.preventDefault(); navigateTo('products')" data-i18n="teaserAll">Barcha mahsulotlar →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="cta-block">
+      <div class="cta-block-inner">
+        <div>
+          <h2 data-i18n="ctaTitle">Biz bilan bog'laning</h2>
+          <p data-i18n="ctaP">Namunalar, qoliplar va hamkorlik shartlari haqida batafsil ma'lumot olish uchun bog'laning.</p>
+        </div>
+        <div style="display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap;">
+          <a href="#" class="btn-primary" onclick="event.preventDefault(); navigateTo('contact')">
+            <span data-i18n="ctaBtn">Bog'lanish</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<div class="page" id="page-about" data-screen-label="02 About">
+  <section class="page-head">
+    <div class="container">
+      <div class="label" data-i18n="aboutLabel">Biz haqimizda</div>
+      <h1 data-i18n="aboutH1" data-i18n-html="1">1994-yildan beri O'zbekistonda <span class="accent">sifatli padosh</span> ishlab chiqaramiz</h1>
+      <p class="lede" data-i18n="aboutLede">Oyoq kiyim padoshvasi ishlab chiqarish sohasidagi 30 yildan ortiq tajriba bizga har bir mijozning talabiga mos mahsulot tayyorlash imkonini beradi.</p>
+    </div>
+  </section>
+
+  <section class="about-gallery">
+    <div class="container">
+      <div class="about-gallery-grid">
+        <div class="ag-item i1" style="background: linear-gradient(135deg,#F5ECE0,#D8C4A3); display:flex; align-items:center; justify-content:center;">
+          <img src="assets/product-1.jpg" style="mix-blend-mode:multiply;filter:contrast(1.05) saturate(1.1);"/>
+          <div class="cap" data-i18n="galCap1">Premium teri padoshi</div>
+        </div>
+        <div class="ag-item i2" style="background: linear-gradient(135deg,#E8EDF8,#AEBEDC); display:flex; align-items:center; justify-content:center;">
+          <img src="assets/product-2.png" style="mix-blend-mode:multiply;filter:contrast(1.05) saturate(1.1);"/>
+          <div class="cap" data-i18n="galCap2">Zamonaviy padosh</div>
+        </div>
+        <div class="ag-item i3" style="background: linear-gradient(135deg,#F0E8D8,#C8B290); display:flex; align-items:center; justify-content:center;">
+          <img src="assets/product-3.png" style="mix-blend-mode:multiply;filter:contrast(1.05) saturate(1.1);"/>
+          <div class="cap" data-i18n="galCap3">Klassik kolleksiya</div>
+        </div>
+        <div class="ag-item i4" style="background: linear-gradient(135deg,#EFEDE7,#B8B6AC); display:flex; align-items:center; justify-content:center;">
+          <img src="assets/product-4.png" style="mix-blend-mode:multiply;filter:contrast(1.05) saturate(1.1);"/>
+          <div class="cap" data-i18n="galCap4">Brunello qolipi</div>
+        </div>
+        <div class="ag-item i5" style="background: linear-gradient(135deg,#E8EFFE,#A8C4FF); display:flex; align-items:center; justify-content:center; color: var(--brand-deep); font-family:'Space Grotesk'; font-weight:700; font-size:28px; letter-spacing:-0.02em; text-align:center; padding:20px;">
+          <div>
+            30+<br/>
+            <span style="font-size:13px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color: var(--ink-2);" data-i18n="galCap5">yil tajriba</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-story">
+    <div class="container story-grid">
+      <div>
+        <div class="label" style="font-size:13px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--brand); margin-bottom:14px;" data-i18n="storyLabel">Bizning yo'limiz</div>
+        <h2 data-i18n="storyH2" data-i18n-html="1">Yillardan o'sib, <span class="accent">ishonchga</span> aylangan</h2>
+      </div>
+      <div>
+        <p data-i18n="storyP1" data-i18n-html="1">Bizlar oyoq kiyim padoshvasi ishlab chiqaradigan <strong>korxonamiz</strong>. 1994-yildan beri faoliyat yurg'izib kelyapmiz.</p>
+        <p data-i18n="storyP2" data-i18n-html="1">Bugungi kunda asosiy yo'nalishimiz — <strong>erkaklar, ayollar va bolalar</strong> oyoq kiyimlari uchun yuqori sifatli padoshlar ishlab chiqarishdir. Klassik, zamonaviy va maxsus buyurtma qolipli modellarni tayyorlaymiz.</p>
+        <p data-i18n="storyP3">Har bir padosh sifat nazoratidan o'tadi: materialning zichligi, qolip aniqligi va uzoq xizmat qilish qobiliyati puxta tekshiriladi.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-stats">
+    <div class="container stats-grid" style="grid-template-columns: repeat(3,1fr);">
+      <div class="stat-big"><div class="num">30<em>+</em></div><div class="lbl" data-i18n="statExp">Yillik tajriba</div></div>
+      <div class="stat-big"><div class="num">120<em>+</em></div><div class="lbl" data-i18n="statAssort">Assortiment</div></div>
+      <div class="stat-big"><div class="num">1994</div><div class="lbl" data-i18n="statSince">Yildan buyon ishlab chiqaramiz</div></div>
+    </div>
+  </section>
+
+  <section class="values">
+    <div class="container">
+      <h2 style="text-align:center;" data-i18n="valTitle" data-i18n-html="1">Biz <span style="color:var(--brand); font-style:italic;">ishonadigan</span> qadriyatlar</h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="n">01</div>
+          <h3 data-i18n="val1T">Sifat birinchi o'rinda</h3>
+          <p data-i18n="val1D">Har bir juft padoshimiz qo'lda tekshiriladi. Mahsulotga ishonch — biznes asosi.</p>
+        </div>
+        <div class="value-card">
+          <div class="n">02</div>
+          <h3 data-i18n="val2T">Mijozga yaqinlik</h3>
+          <p data-i18n="val2D">Har bir mijozga individual yondashamiz. Sizning talabingiz — bizning ustuvorligimiz.</p>
+        </div>
+        <div class="value-card">
+          <div class="n">03</div>
+          <h3 data-i18n="val3T">Doimiy rivojlanish</h3>
+          <p data-i18n="val3D">Yangi qoliplar, zamonaviy uskunalar va yangi materiallar — biz har doim oldinga intilamiz.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PRODUCTS ============ -->
+<div class="page" id="page-products" data-screen-label="03 Products">
+  <section class="page-head">
+    <div class="container" style="text-align:center;">
+      <div class="label" data-i18n="prodLabel">Mahsulotlar</div>
+      <h1 style="margin: 0 auto;" data-i18n="prodH1" data-i18n-html="1">Bizning <span class="accent">padoshlar</span> kolleksiyasi</h1>
+      <p class="lede" style="margin: 28px auto 0;" data-i18n="prodLede">Erkak, ayol va bolalar poyabzali uchun turli qolip va rangdagi padoshlar. Xohlagan razmer va materialda.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+</div>
+
+<!-- ============ CONTACT ============ -->
+<div class="page" id="page-contact" data-screen-label="04 Contact">
+  <section class="page-head">
+    <div class="container" style="text-align:center;">
+      <div class="label" data-i18n="contLabel">Bog'lanish</div>
+      <h1 style="margin: 0 auto;" data-i18n="contH1" data-i18n-html="1">Biz bilan <span class="accent">bog'laning</span></h1>
+      <p class="lede" style="margin: 28px auto 0;" data-i18n="contLede">Savollar va hamkorlik takliflari uchun quyidagi shakl orqali bog'laning yoki to'g'ridan-to'g'ri qo'ng'iroq qiling.</p>
+    </div>
+  </section>
+
+  <div class="container contact-body">
+    <div class="contact-card">
+      <form class="form-grid" onsubmit="handleContact(event)">
+        <div class="form-group">
+          <label data-i18n="formName">Ismingiz</label>
+          <input required type="text" name="name" data-i18n-ph="formNamePh" placeholder="Ism Familiya" />
+        </div>
+        <div class="form-group">
+          <label data-i18n="formPhone">Telefon raqam</label>
+          <input required type="tel" name="phone" placeholder="+998 __ ___ __ __" />
+        </div>
+        <div class="form-group full">
+          <div class="submit-row">
+            <button type="submit" class="btn-primary">
+              <span data-i18n="formSubmit">Yuborish</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="submit-note" data-i18n="formNote">Sizga tez orada javob qaytaramiz. Ma'lumotlaringiz maxfiy saqlanadi.</p>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="contact-info" style="grid-template-columns: repeat(2,1fr);">
+      <div class="info-card">
+        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h4 data-i18n="infoAddr">Manzil</h4>
+        <p data-i18n="infoAddrV" data-i18n-html="1">Toshkent shahri, Yunusobod tumani,<br/>Baraka ko'chasi, 36-uy</p>
+      </div>
+      <div class="info-card">
+        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.9 19.9 0 0 1-8.7-3.1 19.5 19.5 0 0 1-6-6A19.9 19.9 0 0 1 2 4.1 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 2.8a2 2 0 0 1-.5 2L7.9 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/></svg></div>
+        <h4 data-i18n="infoPhone">Telefon</h4>
+        <p><a href="tel:+998951048008">+998 95 104 80 08</a></p>
+      </div>
+    </div>
+
+    <div class="contact-map">
+      <div class="illus">
+        <div class="map-pulse"></div>
+        <div class="map-pin"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="10" r="3"/><path d="M21 10c0 7-9 13-9 13s-9-6-9-13"/></svg></div>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--brand); margin-bottom:12px;" data-i18n="mapLabel">Ishlab chiqarish</div>
+        <h3 style="font-size:26px; margin-bottom:14px;" data-i18n="mapTitle">Toshkent shahri, Yunusobod tumani</h3>
+        <p data-i18n="mapP1">Bizning ishlab chiqarish korxonamiz Baraka ko'chasi, 36-uyda joylashgan. Oldindan bog'lanib, borgan holda mahsulot namunalarini ko'rishingiz mumkin.</p>
+        <p style="margin-top:14px;" data-i18n="mapP2" data-i18n-html="1"><strong style="color:var(--ink);">Ish vaqti:</strong> Dushanba–Shanba, 08:00–18:00</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand">
+          <img src="assets/logo.png" alt="Arkon" />
+          <span>arkon<em>.uz</em></span>
+        </div>
+        <p class="footer-about" data-i18n="footAbout">Oyoq kiyim padoshlari ishlab chiqaradigan korxona. 1994-yildan beri O'zbekistonda sifatli mahsulot yetkazib kelamiz.</p>
+        <div style="display:flex; gap:10px;">
+          <a href="#" style="width:38px; height:38px; border:1px solid rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c-.1-.8-.2-2 0-2.9l1.4-5.9s-.4-.7-.4-1.7c0-1.7 1-2.9 2.2-2.9 1 0 1.5.8 1.5 1.7 0 1-.7 2.6-1 4-.3 1.2.6 2.2 1.8 2.2 2.2 0 3.8-2.3 3.8-5.6 0-2.9-2.1-5-5.1-5-3.5 0-5.5 2.6-5.5 5.3 0 1 .4 2.2.9 2.8 0 .1.1.2 0 .3l-.3 1.2c0 .2-.2.3-.4.2-1.4-.7-2.3-2.7-2.3-4.4C5.5 7.2 8 4 12.3 4c3.5 0 6.2 2.5 6.2 5.8 0 3.5-2.2 6.3-5.2 6.3-1 0-2-.5-2.3-1.2l-.6 2.4c-.2.9-.9 2-1.3 2.6A10 10 0 1 0 12 2z"/></svg></a>
+          <a href="#" style="width:38px; height:38px; border:1px solid rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2 0 1.8.3 2.3.5.5.2 1 .5 1.4 1 .4.4.7.9 1 1.4.1.5.4 1.1.4 2.3.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.3 1.8-.5 2.3-.2.5-.5 1-1 1.4-.4.4-.9.7-1.4 1-.5.1-1.1.4-2.3.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.3-2.3-.5-.5-.2-1-.5-1.4-1-.4-.4-.7-.9-1-1.4-.1-.5-.4-1.1-.4-2.3-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c0-1.2.3-1.8.5-2.3.2-.5.5-1 1-1.4.4-.4.9-.7 1.4-1 .5-.2 1.1-.4 2.3-.4 1.3-.1 1.7-.1 4.9-.1zM12 0c-3.3 0-3.7 0-5 .1C5.7.2 4.9.3 4.1.6c-.7.3-1.4.7-2 1.3-.7.7-1.1 1.3-1.4 2.1C.3 4.9.2 5.7.1 7 0 8.3 0 8.7 0 12s0 3.7.1 5c.1 1.3.2 2.1.5 2.9.3.7.7 1.4 1.3 2 .7.7 1.3 1.1 2.1 1.4.8.3 1.6.4 2.9.5 1.3.1 1.7.1 5 .1s3.7 0 5-.1c1.3-.1 2.1-.2 2.9-.5.7-.3 1.4-.7 2-1.3.7-.7 1.1-1.3 1.4-2.1.3-.8.4-1.6.5-2.9.1-1.3.1-1.7.1-5s0-3.7-.1-5c-.1-1.3-.2-2.1-.5-2.9-.3-.7-.7-1.4-1.3-2-.7-.7-1.3-1.1-2.1-1.4-.8-.3-1.6-.4-2.9-.5C15.7 0 15.3 0 12 0zm0 5.8C8.6 5.8 5.8 8.6 5.8 12s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2-2.8-6.2-6.2-6.2zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg></a>
+          <a href="#" style="width:38px; height:38px; border:1px solid rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.9 15.2c.6-.4.2-.7-4-3.3-.8-.5-1.3-.1-2 .6l-.9.8c-.3.3-.6.3-1-.1l-2.7-1.7c-.6-.4-.3-.6.4-.9 6.8-2.9 11.3-4.9 13.6-5.8 3.2-1.3 3.9-1.6 4.3-1.6.1 0 .3 0 .5.1.1.1.2.2.2.4 0 .1 0 .3-.1.5-.3.8-1.7 5.8-3.4 13.5-.3 1.1-.7 1.5-1.2 1.6-1 .1-1.8-.7-2.8-1.3l-3.5-2.5c-.8-.5-.5-.7-.2-1 .1-.2 2.5-2.3 2.8-2.8z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h5 data-i18n="footCompany">Kompaniya</h5>
+        <ul>
+          <li><a href="#" onclick="event.preventDefault(); navigateTo('about')" data-i18n="navAbout">Biz haqimizda</a></li>
+          <li><a href="#" onclick="event.preventDefault(); navigateTo('products')" data-i18n="navProducts">Mahsulotlar</a></li>
+          <li><a href="#" onclick="event.preventDefault(); navigateTo('contact')" data-i18n="navContact">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 data-i18n="footProducts">Mahsulotlar</h5>
+        <ul>
+          <li><a href="#" onclick="event.preventDefault(); navigateTo('products')" data-i18n="footMen">Erkaklar uchun</a></li>
+          <li><a href="#" onclick="event.preventDefault(); navigateTo('products')" data-i18n="footWomen">Ayollar uchun</a></li>
+          <li><a href="#" onclick="event.preventDefault(); navigateTo('products')" data-i18n="footKids">Bolalar uchun</a></li>
+          <li><a href="#" onclick="event.preventDefault(); navigateTo('products')" data-i18n="footCustom">Maxsus qoliplar</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 data-i18n="navContact">Kontakt</h5>
+        <ul>
+          <li>+998 95 104 80 08</li>
+          <li data-i18n="footCity">Toshkent, Yunusobod</li>
+          <li>Baraka 36</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div data-i18n="footCopy">© 2026 Arkon.uz — Barcha huquqlar himoyalangan.</div>
+      <div data-i18n="footMade">Made in Uzbekistan 🇺🇿</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL ============ -->
+<div id="modal-root"></div>
+
+<script>
+// ===== I18N =====
+const I18N = {
+  uz: {
+    navHome: "Bosh sahifa", navAbout: "Biz haqimizda", navProducts: "Mahsulotlar", navContact: "Kontakt", navCta: "Bog'lanish",
+    eyebrow: "1994-yildan beri sifatli ishlab chiqarish",
+    heroH1a: "O'zbekistonda", heroH1b: "padoshlar", heroH1c: "ishlab chiqaruvchi yetakchi",
+    heroLede: "Arkon — erkaklar, ayollar va bolalar oyoq kiyimlari uchun yuqori sifatli padoshlar ishlab chiqarish bilan shug'ullanuvchi korxona. Chidamli materiallar va aniq qolipda tayyorlanadi.",
+    heroBtn1: "Mahsulotlarni ko'rish", heroBtn2: "Biz haqimizda",
+    statExp: "Yillik tajriba", statAssort: "Assortiment", statSince: "Yildan buyon",
+    badge1: "Yuqori sifatli padoshlar", badge2: "Zamonaviy uskunalar",
+    uspLabel: "Nega aynan Arkon", uspTitle: "Har bir juft poyabzal sifatli poydevordan boshlanadi",
+    uspIntro: "Padosh — oyoq kiyimining jon qismi. Biz uni chidamli materiallar va tabiiy teri qoplamalarini aralashtirib, aniq qolipda ishlab chiqaramiz.",
+    uspQualityT: "Yuqori sifat", uspQualityD: "Chidamli materiallar va sifatli teri — uzoq xizmat qilish uchun.",
+    uspDurT: "Chidamlilik", uspDurD: "Uzoq muddat foydalanishga chidamli material va puxta qolip.",
+    uspMoldT: "Maxsus qoliplar", uspMoldD: "Buyurtmachining talabi bo'yicha shaxsiy qoliplar tayyorlash.",
+    uspExpT: "30+ yil tajriba", uspExpD: "1994 yildan beri padosh ishlab chiqarishda yetakchi pozitsiyada.",
+    teaserTitle: 'Bizning <span style="color:var(--brand); font-style:italic;">mahsulotlarimiz</span>',
+    teaserP: "Erkak, ayol va bolalar poyabzali uchun turli qolip va rangdagi padoshlar. Har bir juft — qo'lda tekshirilgan.",
+    teaserAll: "Barcha mahsulotlar →",
+    ctaTitle: "Biz bilan bog'laning", ctaP: "Namunalar, qoliplar va hamkorlik shartlari haqida batafsil ma'lumot olish uchun bog'laning.", ctaBtn: "Bog'lanish",
+    aboutLabel: "Biz haqimizda",
+    aboutH1: '1994-yildan beri O\'zbekistonda <span class="accent">sifatli padosh</span> ishlab chiqaramiz',
+    aboutLede: "Oyoq kiyim padoshvasi ishlab chiqarish sohasidagi 30 yildan ortiq tajriba bizga har bir mijozning talabiga mos mahsulot tayyorlash imkonini beradi.",
+    galCap1: "Premium teri padoshi", galCap2: "Zamonaviy padosh", galCap3: "Klassik kolleksiya", galCap4: "Brunello qolipi", galCap5: "yil tajriba",
+    storyLabel: "Bizning yo'limiz",
+    storyH2: 'Yillardan o\'sib, <span class="accent">ishonchga</span> aylangan',
+    storyP1: "Bizlar oyoq kiyim padoshvasi ishlab chiqaradigan <strong>korxonamiz</strong>. 1994-yildan beri faoliyat yurg'izib kelyapmiz.",
+    storyP2: "Bugungi kunda asosiy yo'nalishimiz — <strong>erkaklar, ayollar va bolalar</strong> oyoq kiyimlari uchun yuqori sifatli padoshlar ishlab chiqarishdir. Klassik, zamonaviy va maxsus buyurtma qolipli modellarni tayyorlaymiz.",
+    storyP3: "Har bir padosh sifat nazoratidan o'tadi: materialning zichligi, qolip aniqligi va uzoq xizmat qilish qobiliyati puxta tekshiriladi.",
+    valTitle: 'Biz <span style="color:var(--brand); font-style:italic;">ishonadigan</span> qadriyatlar',
+    val1T: "Sifat birinchi o'rinda", val1D: "Har bir juft padoshimiz qo'lda tekshiriladi. Mahsulotga ishonch — biznes asosi.",
+    val2T: "Mijozga yaqinlik", val2D: "Har bir mijozga individual yondashamiz. Sizning talabingiz — bizning ustuvorligimiz.",
+    val3T: "Doimiy rivojlanish", val3D: "Yangi qoliplar, zamonaviy uskunalar va yangi materiallar — biz har doim oldinga intilamiz.",
+    prodLabel: "Mahsulotlar",
+    prodH1: 'Bizning <span class="accent">padoshlar</span> kolleksiyasi',
+    prodLede: "Erkak, ayol va bolalar poyabzali uchun turli qolip va rangdagi padoshlar. Xohlagan razmer va materialda.",
+    contLabel: "Bog'lanish",
+    contH1: 'Biz bilan <span class="accent">bog\'laning</span>',
+    contLede: "Savollar va hamkorlik takliflari uchun quyidagi shakl orqali bog'laning yoki to'g'ridan-to'g'ri qo'ng'iroq qiling.",
+    formName: "Ismingiz", formNamePh: "Ism Familiya", formPhone: "Telefon raqam", formSubmit: "Yuborish",
+    formNote: "Sizga tez orada javob qaytaramiz. Ma'lumotlaringiz maxfiy saqlanadi.",
+    formSent: "Yuborildi!",
+    infoAddr: "Manzil", infoAddrV: "Toshkent shahri, Yunusobod tumani,<br/>Baraka ko'chasi, 36-uy",
+    infoPhone: "Telefon",
+    mapLabel: "Ishlab chiqarish", mapTitle: "Toshkent shahri, Yunusobod tumani",
+    mapP1: "Bizning ishlab chiqarish korxonamiz Baraka ko'chasi, 36-uyda joylashgan. Oldindan bog'lanib, borgan holda mahsulot namunalarini ko'rishingiz mumkin.",
+    mapP2: '<strong style="color:var(--ink);">Ish vaqti:</strong> Dushanba–Shanba, 08:00–18:00',
+    footAbout: "Oyoq kiyim padoshlari ishlab chiqaradigan korxona. 1994-yildan beri O'zbekistonda sifatli mahsulot yetkazib kelamiz.",
+    footCompany: "Kompaniya", footProducts: "Mahsulotlar",
+    footMen: "Erkaklar uchun", footWomen: "Ayollar uchun", footKids: "Bolalar uchun", footCustom: "Maxsus qoliplar",
+    footCity: "Toshkent, Yunusobod",
+    footCopy: "© 2026 Arkon.uz — Barcha huquqlar himoyalangan.", footMade: "Made in Uzbekistan 🇺🇿",
+    filterAll: "Barchasi", filterMen: "Erkaklar", filterWomen: "Ayollar", filterKids: "Bolalar",
+    modalMaterial: "Material", modalSizes: "Razmerlar", modalColors: "Ranglari", modalThick: "Qalinligi", modalUse: "Qaysi uchun",
+    modalOrder: "Buyurtma berish",
+    modalDescSuffix: ". Biz ishlab chiqargan har bir padosh — qolip aniqligi va material sifatiga qat'iy amal qilgan holda tayyorlanadi."
+  },
+  ru: {
+    navHome: "Главная", navAbout: "О нас", navProducts: "Продукция", navContact: "Контакты", navCta: "Связаться",
+    eyebrow: "Качественное производство с 1994 года",
+    heroH1a: "Ведущий производитель", heroH1b: "подошв", heroH1c: "в Узбекистане",
+    heroLede: "Arkon — предприятие по производству высококачественных подошв для мужской, женской и детской обуви. Прочные материалы и точные колодки.",
+    heroBtn1: "Смотреть продукцию", heroBtn2: "О нас",
+    statExp: "Лет опыта", statAssort: "Ассортимент", statSince: "С какого года",
+    badge1: "Качественные подошвы", badge2: "Современное оборудование",
+    uspLabel: "Почему именно Arkon", uspTitle: "Каждая пара обуви начинается с качественной основы",
+    uspIntro: "Подошва — душа обуви. Мы производим её из прочных материалов и натуральной кожи, в точных колодках.",
+    uspQualityT: "Высокое качество", uspQualityD: "Прочные материалы и качественная кожа для долгой службы.",
+    uspDurT: "Долговечность", uspDurD: "Прочные материалы и аккуратная колодка для долгого использования.",
+    uspMoldT: "Индивидуальные колодки", uspMoldD: "Изготовление персональных колодок по требованию заказчика.",
+    uspExpT: "30+ лет опыта", uspExpD: "С 1994 года лидирующая позиция в производстве подошв.",
+    teaserTitle: 'Наша <span style="color:var(--brand); font-style:italic;">продукция</span>',
+    teaserP: "Подошвы разных форм и цветов для мужской, женской и детской обуви. Каждая пара проверена вручную.",
+    teaserAll: "Вся продукция →",
+    ctaTitle: "Свяжитесь с нами", ctaP: "Для получения подробной информации об образцах, колодках и условиях сотрудничества свяжитесь с нами.", ctaBtn: "Связаться",
+    aboutLabel: "О нас",
+    aboutH1: 'С 1994 года производим <span class="accent">качественные подошвы</span> в Узбекистане',
+    aboutLede: "Более 30 лет опыта в производстве подошв для обуви позволяет нам изготавливать продукцию, отвечающую требованиям каждого клиента.",
+    galCap1: "Подошва из премиум-кожи", galCap2: "Современная подошва", galCap3: "Классическая коллекция", galCap4: "Колодка Brunello", galCap5: "лет опыта",
+    storyLabel: "Наш путь",
+    storyH2: 'Росли годами и стали <span class="accent">надёжными</span>',
+    storyP1: "Мы — <strong>предприятие</strong> по производству подошв для обуви. Работаем с 1994 года.",
+    storyP2: "Сегодня наше основное направление — производство высококачественных подошв для <strong>мужской, женской и детской</strong> обуви. Изготавливаем классические, современные и индивидуальные модели.",
+    storyP3: "Каждая подошва проходит контроль качества: плотность материала, точность колодки и долговечность тщательно проверяются.",
+    valTitle: 'Ценности, в которые мы <span style="color:var(--brand); font-style:italic;">верим</span>',
+    val1T: "Качество на первом месте", val1D: "Каждая подошва проверяется вручную. Доверие к продукту — основа бизнеса.",
+    val2T: "Близость к клиенту", val2D: "К каждому клиенту индивидуальный подход. Ваши требования — наш приоритет.",
+    val3T: "Постоянное развитие", val3D: "Новые колодки, современное оборудование и новые материалы — мы всегда идём вперёд.",
+    prodLabel: "Продукция",
+    prodH1: 'Наша коллекция <span class="accent">подошв</span>',
+    prodLede: "Подошвы разных форм и цветов для мужской, женской и детской обуви. В любом размере и материале.",
+    contLabel: "Контакты",
+    contH1: 'Свяжитесь <span class="accent">с нами</span>',
+    contLede: "По вопросам и предложениям сотрудничества свяжитесь через форму ниже или напрямую по телефону.",
+    formName: "Ваше имя", formNamePh: "Имя Фамилия", formPhone: "Номер телефона", formSubmit: "Отправить",
+    formNote: "Мы свяжемся с вами в ближайшее время. Ваши данные конфиденциальны.",
+    formSent: "Отправлено!",
+    infoAddr: "Адрес", infoAddrV: "г. Ташкент, Юнусабадский район,<br/>ул. Барака, 36",
+    infoPhone: "Телефон",
+    mapLabel: "Производство", mapTitle: "г. Ташкент, Юнусабадский район",
+    mapP1: "Наше производство расположено по адресу ул. Барака, 36. Предварительно связавшись, вы можете посетить нас и осмотреть образцы.",
+    mapP2: '<strong style="color:var(--ink);">Часы работы:</strong> Пн–Сб, 08:00–18:00',
+    footAbout: "Предприятие по производству обувных подошв. С 1994 года поставляем качественную продукцию в Узбекистане.",
+    footCompany: "Компания", footProducts: "Продукция",
+    footMen: "Для мужчин", footWomen: "Для женщин", footKids: "Для детей", footCustom: "Индивидуальные колодки",
+    footCity: "Ташкент, Юнусабад",
+    footCopy: "© 2026 Arkon.uz — Все права защищены.", footMade: "Сделано в Узбекистане 🇺🇿",
+    filterAll: "Все", filterMen: "Мужские", filterWomen: "Женские", filterKids: "Детские",
+    modalMaterial: "Материал", modalSizes: "Размеры", modalColors: "Цвета", modalThick: "Толщина", modalUse: "Назначение",
+    modalOrder: "Заказать",
+    modalDescSuffix: ". Каждая подошва нашего производства изготавливается с точным соблюдением колодки и качества материала."
+  },
+  en: {
+    navHome: "Home", navAbout: "About us", navProducts: "Products", navContact: "Contact", navCta: "Get in touch",
+    eyebrow: "Quality manufacturing since 1994",
+    heroH1a: "Leading", heroH1b: "shoe sole", heroH1c: "manufacturer in Uzbekistan",
+    heroLede: "Arkon is a manufacturing company producing high-quality shoe soles for men's, women's and children's footwear. Durable materials and precise molding.",
+    heroBtn1: "See products", heroBtn2: "About us",
+    statExp: "Years of experience", statAssort: "Product range", statSince: "Since year",
+    badge1: "High-quality soles", badge2: "Modern equipment",
+    uspLabel: "Why Arkon", uspTitle: "Every pair of shoes starts with a quality foundation",
+    uspIntro: "The sole is the heart of the shoe. We craft it from durable materials and natural leather, in precise molds.",
+    uspQualityT: "High quality", uspQualityD: "Durable materials and quality leather — built to last.",
+    uspDurT: "Durability", uspDurD: "Long-lasting material and precise molding for extended use.",
+    uspMoldT: "Custom molds", uspMoldD: "Personalized molds tailored to your specific order.",
+    uspExpT: "30+ years of experience", uspExpD: "Leading the sole manufacturing industry since 1994.",
+    teaserTitle: 'Our <span style="color:var(--brand); font-style:italic;">products</span>',
+    teaserP: "Soles of various shapes and colors for men's, women's, and children's footwear. Each pair is hand-checked.",
+    teaserAll: "All products →",
+    ctaTitle: "Get in touch with us", ctaP: "Contact us for detailed information about samples, molds, and cooperation terms.", ctaBtn: "Contact",
+    aboutLabel: "About us",
+    aboutH1: 'Manufacturing <span class="accent">quality soles</span> in Uzbekistan since 1994',
+    aboutLede: "Over 30 years of experience in sole manufacturing enables us to craft products tailored to every customer's needs.",
+    galCap1: "Premium leather sole", galCap2: "Modern sole", galCap3: "Classic collection", galCap4: "Brunello mold", galCap5: "years of experience",
+    storyLabel: "Our journey",
+    storyH2: 'Grown over the years into <span class="accent">trust</span>',
+    storyP1: "We are a <strong>manufacturing company</strong> producing shoe soles. We've been operating since 1994.",
+    storyP2: "Today our main focus is producing high-quality soles for <strong>men's, women's, and children's</strong> footwear. We make classic, modern, and custom-mold models.",
+    storyP3: "Every sole passes quality control: material density, mold precision, and longevity are carefully checked.",
+    valTitle: 'Values we <span style="color:var(--brand); font-style:italic;">believe in</span>',
+    val1T: "Quality first", val1D: "Every sole is hand-checked. Trust in the product is the foundation of business.",
+    val2T: "Close to the client", val2D: "We take an individual approach to every client. Your needs are our priority.",
+    val3T: "Continuous growth", val3D: "New molds, modern equipment, and fresh materials — we always move forward.",
+    prodLabel: "Products",
+    prodH1: 'Our <span class="accent">sole</span> collection',
+    prodLede: "Soles of various shapes and colors for men's, women's, and children's footwear. Any size and material you need.",
+    contLabel: "Contact",
+    contH1: 'Get in <span class="accent">touch</span>',
+    contLede: "For questions and cooperation proposals, please reach out through the form below or call us directly.",
+    formName: "Your name", formNamePh: "Full name", formPhone: "Phone number", formSubmit: "Send",
+    formNote: "We'll get back to you shortly. Your information is kept confidential.",
+    formSent: "Sent!",
+    infoAddr: "Address", infoAddrV: "Tashkent, Yunusabad district,<br/>Baraka street, 36",
+    infoPhone: "Phone",
+    mapLabel: "Production", mapTitle: "Tashkent, Yunusabad district",
+    mapP1: "Our production facility is located at Baraka street, 36. Please call ahead to schedule a visit and see product samples.",
+    mapP2: '<strong style="color:var(--ink);">Working hours:</strong> Mon–Sat, 08:00–18:00',
+    footAbout: "A shoe sole manufacturing company. Delivering quality products in Uzbekistan since 1994.",
+    footCompany: "Company", footProducts: "Products",
+    footMen: "For men", footWomen: "For women", footKids: "For children", footCustom: "Custom molds",
+    footCity: "Tashkent, Yunusabad",
+    footCopy: "© 2026 Arkon.uz — All rights reserved.", footMade: "Made in Uzbekistan 🇺🇿",
+    filterAll: "All", filterMen: "Men's", filterWomen: "Women's", filterKids: "Kids'",
+    modalMaterial: "Material", modalSizes: "Sizes", modalColors: "Colors", modalThick: "Thickness", modalUse: "Use for",
+    modalOrder: "Order now",
+    modalDescSuffix: ". Every sole we manufacture is made with strict adherence to mold precision and material quality."
+  }
+};
+
+let currentLang = 'uz';
+
+function setLang(lang) {
+  if (!I18N[lang]) return;
+  currentLang = lang;
+  const dict = I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] === undefined) return;
+    if (el.hasAttribute('data-i18n-html')) el.innerHTML = dict[key];
+    else el.textContent = dict[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (dict[key] !== undefined) el.placeholder = dict[key];
+  });
+  document.querySelectorAll('#lang-switch button').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  document.documentElement.lang = lang;
+  // re-render dynamic parts
+  renderProducts();
+  renderHomeProducts();
+}
+
+// ===== PRODUCTS DATA =====
+const PRODUCT_TAGS = {
+  yangi: { uz: 'Yangi', ru: 'Новый', en: 'New' },
+  best:  { uz: 'Best',  ru: 'Хит',    en: 'Best' },
+  premium: { uz: 'Premium', ru: 'Премиум', en: 'Premium' }
+};
+const CAT_LABEL = {
+  men:   { uz: 'Erkaklar', ru: 'Мужские', en: "Men's" },
+  women: { uz: 'Ayollar',  ru: 'Женские', en: "Women's" },
+  kids:  { uz: 'Bolalar',  ru: 'Детские', en: "Kids'" }
+};
+
+const PRODUCTS = [
+  {
+    id: 'p1',
+    name: 'PU-0750',
+    catKey: 'all',
+    tagKey: 'yangi',
+    desc: { uz: 'Qora-ko\'k chuqur naqshli ishonchli padosh', ru: 'Надёжная подошва с глубоким рисунком', en: 'Reliable sole with deep tread pattern' },
+    img: 'assets/sole-1.png',
+    c1: '#EEF1F6', c2: '#C9D1DE',
+    specs: {
+      material: { uz: 'PU (poliuretan)', ru: 'PU (полиуретан)', en: 'PU (polyurethane)' },
+      sizes: '40-46',
+      colors: { uz: 'Qora + ko\'k', ru: 'Чёрный + синий', en: 'Black + blue' },
+      thickness: '22 mm',
+      useFor: { uz: 'Qishki va kuzgi etiklar', ru: 'Зимние и осенние ботинки', en: 'Winter and autumn boots' }
+    }
+  },
+  {
+    id: 'p2',
+    name: 'PU-075',
+    catKey: 'all',
+    tagKey: 'best',
+    desc: { uz: 'Klassik chiziqli yengil padosh', ru: 'Лёгкая классическая подошва', en: 'Classic lightweight sole' },
+    img: 'assets/sole-2.png',
+    c1: '#EEF1F6', c2: '#C9D1DE',
+    specs: {
+      material: { uz: 'PU (poliuretan)', ru: 'PU (полиуретан)', en: 'PU (polyurethane)' },
+      sizes: '40-45',
+      colors: { uz: 'Qora + ko\'k', ru: 'Чёрный + синий', en: 'Black + blue' },
+      thickness: '12 mm',
+      useFor: { uz: 'Klassik tufli, loafer', ru: 'Классические туфли, лоферы', en: 'Classic shoes, loafers' }
+    }
+  },
+  {
+    id: 'p3',
+    name: 'TEP-807',
+    catKey: 'all',
+    tagKey: 'premium',
+    desc: { uz: 'Krem rangli yumshoq va yengil padosh', ru: 'Кремовая мягкая лёгкая подошва', en: 'Cream-colored soft and light sole' },
+    img: 'assets/sole-3.png',
+    c1: '#F5F1E8', c2: '#D8CDB4',
+    specs: {
+      material: { uz: 'TEP (termoelastoplast)', ru: 'TEP (термоэластопласт)', en: 'TEP (thermo-elastoplastic)' },
+      sizes: '38-44',
+      colors: { uz: 'Krem + qora', ru: 'Крем + чёрный', en: 'Cream + black' },
+      thickness: '10 mm',
+      useFor: { uz: 'Yozgi va bahorgi tufli', ru: 'Летняя и весенняя обувь', en: 'Summer and spring shoes' }
+    }
+  },
+  {
+    id: 'p4',
+    name: 'PU-928',
+    catKey: 'all',
+    tagKey: '',
+    desc: { uz: 'Vertikal qovurg\'ali baland zamonaviy padosh', ru: 'Высокая современная подошва с рёбрами', en: 'Tall modern sole with vertical ribs' },
+    img: 'assets/sole-4.png',
+    c1: '#E8EDF6', c2: '#A8B5CC',
+    specs: {
+      material: { uz: 'PU (poliuretan)', ru: 'PU (полиуретан)', en: 'PU (polyurethane)' },
+      sizes: '39-45',
+      colors: { uz: 'Qora + ko\'k', ru: 'Чёрный + синий', en: 'Black + blue' },
+      thickness: '28 mm',
+      useFor: { uz: 'Zamonaviy krossovkalar, etik', ru: 'Современные кроссовки, ботинки', en: 'Modern sneakers, boots' }
+    }
+  }
+];
+function tr(v) { return v && typeof v === 'object' ? (v[currentLang] || v.uz) : v; }
+
+const CATEGORIES = [
+  { key: 'all',   i18n: 'filterAll' },
+  { key: 'men',   i18n: 'filterMen' },
+  { key: 'women', i18n: 'filterWomen' },
+  { key: 'kids',  i18n: 'filterKids' },
+];
+
+let currentFilter = 'all';
+
+// ===== RENDER PRODUCTS =====
+function productCardHTML(p) {
+  const tag = p.tagKey ? (PRODUCT_TAGS[p.tagKey] && PRODUCT_TAGS[p.tagKey][currentLang]) : '';
+  return `
+    <div class="product-card" onclick="openProduct('${p.id}')">
+      <div class="product-img" style="--pc1:${p.c1}; --pc2:${p.c2};">
+        <div class="bg"></div>
+        ${tag ? `<div class="product-tag">${tag}</div>` : ''}
+        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+        <div class="product-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </div>
+      </div>
+      <div class="product-meta">
+        <div class="cat">Arkon</div>
+        <h3>${p.name}</h3>
+        <div class="desc">${tr(p.desc)}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderHomeProducts() {
+  document.getElementById('home-products').innerHTML =
+    PRODUCTS.slice(0, 4).map(productCardHTML).join('');
+}
+
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = PRODUCTS.map(productCardHTML).join('');
+}
+
+// ===== MODAL =====
+function openProduct(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  const dict = I18N[currentLang];
+  const root = document.getElementById('modal-root');
+  root.innerHTML = `
+    <div class="modal-backdrop" onclick="if(event.target===this) closeModal()">
+      <div class="modal">
+        <div class="modal-img" style="--pc1:${p.c1}; --pc2:${p.c2};">
+          <div class="bg"></div>
+          <img src="${p.img}" alt="${p.name}"/>
+        </div>
+        <div class="modal-body">
+          <button class="modal-close" onclick="closeModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+          <div class="cat">Arkon</div>
+          <h2>${p.name}</h2>
+          <p>${tr(p.desc)}${dict.modalDescSuffix}</p>
+          <div class="specs">
+            <div class="row"><span>${dict.modalMaterial}</span><span>${tr(p.specs.material)}</span></div>
+            <div class="row"><span>${dict.modalSizes}</span><span>${p.specs.sizes}</span></div>
+            <div class="row"><span>${dict.modalColors}</span><span>${tr(p.specs.colors)}</span></div>
+            <div class="row"><span>${dict.modalThick}</span><span>${p.specs.thickness}</span></div>
+            <div class="row"><span>${dict.modalUse}</span><span>${tr(p.specs.useFor)}</span></div>
+          </div>
+          <button class="btn-primary" onclick="closeModal(); navigateTo('contact')">
+            ${dict.modalOrder}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal-root').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+// ===== NAV =====
+function navigateTo(page) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.dataset.nav === page);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== FORM =====
+function handleContact(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type=submit]');
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 7l-8 10-4-4"/></svg> ' + I18N[currentLang].formSent;
+  btn.style.background = '#20C96B';
+  btn.style.color = 'white';
+  setTimeout(() => {
+    e.target.reset();
+    btn.innerHTML = originalHTML;
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 2600);
+}
+
+// ===== INIT =====
+renderHomeProducts();
+renderProducts();
+
+// Close modal on Esc
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+
+</body>
+</html>
